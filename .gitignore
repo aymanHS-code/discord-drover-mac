@@ -2,6 +2,5 @@
 *.o
 udp_test
 .DS_Store
-drover-packet.bin
 drover.txt
 /tmp/

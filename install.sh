@@ -181,6 +181,12 @@ if [[ ! -d "$SOURCE_APP" ]]; then
   exit 1
 fi
 
+if [[ ! -f "$PACKET" ]]; then
+  echo "Missing $PACKET"
+  echo "drover-packet.bin must sit next to install.sh."
+  exit 1
+fi
+
 pick_codesign_id() {
   local id
   id="$(/usr/bin/python3 "$ROOT/scripts/ensure-signing-identity.py")"
@@ -287,9 +293,15 @@ install_stub() {
   echo "Installing Drover into the Discord copy..."
   /bin/cp "$DYLIB" "$dest_dylib"
   /usr/bin/install_name_tool -id @rpath/drover_direct.dylib "$dest_dylib"
-  if [[ -f "$PACKET" ]]; then
-    /bin/cp "$PACKET" "$app/Contents/Resources/drover-packet.bin"
+
+  if [[ ! -f "$PACKET" ]]; then
+    echo "Missing $PACKET"
+    echo "drover-packet.bin must sit next to install.sh."
+    exit 1
   fi
+  echo "Copying drover-packet.bin into Contents/Resources..."
+  /bin/mkdir -p "$app/Contents/Resources"
+  /bin/cp "$PACKET" "$app/Contents/Resources/drover-packet.bin"
 
   /usr/bin/clang -arch arm64 -arch x86_64 -O2 \
     -o "$app/Contents/MacOS/Discord" \
@@ -370,10 +382,6 @@ if [[ -d "$old_spaced" && "$old_spaced" != "$INSTALL_APP" ]]; then
   /bin/rm -rf "$old_spaced"
 fi
 
-if [[ ! -f "$PACKET" ]]; then
-  echo "Note: no drover-packet.bin next to install.sh — using the built-in 00/01 prelude only."
-fi
-
 if [[ "$add_dock" -eq 1 ]]; then
   echo "Adding $DISPLAY_NAME to the Dock..."
   dock_result="$(/usr/bin/python3 "$ROOT/scripts/add-to-dock.py" "$INSTALL_APP")"
@@ -391,12 +399,7 @@ echo "Log:       $DROVER_LOG"
 if [[ "$launch" -eq 1 ]]; then
   : > "$DROVER_LOG"
   echo "Launching $DISPLAY_NAME..."
-  packet_env=()
-  if [[ -f "$PACKET" ]]; then
-    packet_env=(--env "DROVER_PACKET_PATH=$PACKET")
-  fi
   /usr/bin/open -n \
-    "${packet_env[@]}" \
     --env "DROVER_DEBUG=${DROVER_DEBUG:-0}" \
     "$INSTALL_APP" \
     --args --disable-gpu

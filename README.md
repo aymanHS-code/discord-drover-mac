@@ -1,8 +1,10 @@
 # Discord Drover for macOS
 
-A macOS port of Discord Drover **Direct mode**. It wraps a *copy* of Discord and, on each new voice UDP socket, sends:
+A macOS port of **Direct mode** from [hdrover’s Discord Drover](https://github.com/hdrover/discord-drover) for Windows. The original Windows program and Direct-mode UDP prelude are by **hdrover**.
 
-1. `drover-packet.bin` if you provide one (re-read every connection)
+It wraps a *copy* of Discord and, on each new voice UDP socket, sends:
+
+1. `drover-packet.bin` (shipped in this repo, copied into the app)
 2. a 1-byte `0x00` packet
 3. a 1-byte `0x01` packet
 4. a 50ms pause
@@ -39,10 +41,8 @@ CODESIGN_P12=/path/to/dev.p12 ./install.sh
 ## Install
 
 ```bash
-git clone https://github.com/YOUR_USER/discord-drover-mac.git
+git clone https://github.com/aymanHS-code/discord-drover-mac.git
 cd discord-drover-mac
-# optional: copy your packet next to this README
-# cp /path/to/drover-packet.bin .
 chmod +x install.sh
 ./install.sh
 ```
@@ -51,6 +51,7 @@ That command:
 
 - builds `drover_direct.dylib`
 - copies Discord to `~/Applications/Discord-Drover.app`
+- copies `drover-packet.bin` into `Contents/Resources` (where the dylib reads it)
 - links Drover into the main app **and** the renderer helper (where `discord_voice.node` lives)
 - signs the copy with your Apple Development identity
 - adds **Discord Drover** to the Dock
@@ -62,11 +63,7 @@ Use this Dock icon for voice, not the original Discord.
 
 Join a voice channel in **Discord Drover**. Each new channel connection sends the prelude again (including when macOS recycles socket file descriptors).
 
-Optional packet file:
-
-- Put `drover-packet.bin` in this repo folder and re-run `./install.sh`
-- Or set `DROVER_PACKET_PATH` when launching
-- The file is re-read on every new voice socket; replace it without rebuilding
+`drover-packet.bin` is re-read from the app’s `Contents/Resources` on every new voice socket. Replace the file in this repo and re-run `./install.sh` to update it. You can also override the path with `DROVER_PACKET_PATH`.
 
 Logs: `/tmp/discord-drover.log`
 
@@ -90,6 +87,10 @@ After changing Drover source:
 - Electron Framework is left on Discord’s original Developer ID.
 - `DYLD_INSERT_LIBRARIES` is not used; it crashes Chromium helpers.
 
+## Credits
+
+Windows Discord Drover (including Direct mode) was written by **hdrover**: [github.com/hdrover/discord-drover](https://github.com/hdrover/discord-drover).
+
 ## License / disclaimer
 
-This wraps Discord for your own machine. It is not affiliated with Discord. Use it only where you are allowed to. `drover-packet.bin` is optional and is not shipped in this repository.
+This wraps Discord for your own machine. It is not affiliated with Discord or with the original Windows project. Use it only where you are allowed to.

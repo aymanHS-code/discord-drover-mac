@@ -1,5 +1,6 @@
 /*
  * macOS Direct-mode port of Discord Drover's UDP prelude.
+ * Original Windows version: hdrover, https://github.com/hdrover/discord-drover
  *
  * On the first 74-byte UDP send on a socket:
  *   1. send drover-packet.bin if present (re-read each time)
