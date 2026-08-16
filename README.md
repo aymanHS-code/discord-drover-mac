@@ -1,16 +1,14 @@
 # Discord Drover for macOS
 
-A macOS port of **Direct mode** from [hdrover’s Discord Drover](https://github.com/hdrover/discord-drover) for Windows. The original Windows program and Direct-mode UDP prelude are by **hdrover**.
+**Discord Drover** is a second Discord app for Mac that sends a short UDP prelude on each new voice connection so voice can work where it is otherwise blocked. Stock `/Applications/Discord.app` is never modified. The copy lives in `~/Applications` and in the Dock.
 
-It wraps a *copy* of Discord and, on each new voice UDP socket, sends:
+On each new voice UDP socket it sends:
 
-1. `drover-packet.bin` (shipped in this repo, copied into the app)
+1. `drover-packet.bin`
 2. a 1-byte `0x00` packet
 3. a 1-byte `0x01` packet
 4. a 50ms pause
 5. Discord’s original packet unchanged
-
-Stock `/Applications/Discord.app` is never modified. You get a second app, **Discord Drover**, in `~/Applications` and in the Dock.
 
 **Before installing:** create a [free Apple Developer account](https://developer.apple.com/account/) (the paid $99 program is not required) so Apple can issue an Apple Development certificate. Full Xcode is not required to build or install.
 
@@ -51,7 +49,6 @@ That command:
 
 - builds `drover_direct.dylib`
 - copies Discord to `~/Applications/Discord-Drover.app`
-- copies `drover-packet.bin` into `Contents/Resources` (where the dylib reads it)
 - links Drover into the main app **and** the renderer helper (where `discord_voice.node` lives)
 - signs the copy with your Apple Development identity
 - adds **Discord Drover** to the Dock
@@ -62,8 +59,6 @@ Use this Dock icon for voice, not the original Discord.
 ## Usage
 
 Join a voice channel in **Discord Drover**. Each new channel connection sends the prelude again (including when macOS recycles socket file descriptors).
-
-`drover-packet.bin` is re-read from the app’s `Contents/Resources` on every new voice socket. Replace the file in this repo and re-run `./install.sh` to update it. You can also override the path with `DROVER_PACKET_PATH`.
 
 Logs: `/tmp/discord-drover.log`
 
@@ -89,7 +84,7 @@ After changing Drover source:
 
 ## Credits
 
-Windows Discord Drover (including Direct mode) was written by **hdrover**: [github.com/hdrover/discord-drover](https://github.com/hdrover/discord-drover).
+Windows Discord Drover (including Direct mode) was written by **hdrover**: [https://github.com/hdrover/discord-drover](https://github.com/hdrover/discord-drover).
 
 ## License / disclaimer
 
