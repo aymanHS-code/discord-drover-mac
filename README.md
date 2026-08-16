@@ -76,6 +76,17 @@ After changing Drover source:
 ./run-discord.sh
 ```
 
+## Share with friends
+
+After `./install.sh`, build a signed disk image (default: `~/Desktop/Discord-Drover.dmg`):
+
+```bash
+chmod +x make-dmg.sh
+./make-dmg.sh
+```
+
+Friends drag **Discord-Drover** into Applications. The first launch needs **right-click → Open** because this uses an Apple Development certificate, not a notarized Developer ID.
+
 ## Notes
 
 - `./install.sh` launches with `--disable-gpu` so the window is not black after signing.
