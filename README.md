@@ -19,7 +19,8 @@ On each new voice UDP socket it sends:
 3. Discord installed at `/Applications/Discord.app`
 4. **Xcode Command Line Tools** — `clang`, `make`, `python3`, `codesign`. `./install.sh` checks these and runs `xcode-select --install` if they are missing. The full Xcode app is not required.
 
-Ad-hoc signatures will crash Discord’s renderer. Do not skip signing.
+> [!NOTE]
+> Ad-hoc signatures will crash Discord’s renderer. Do not skip signing.
 
 ### Signing certificate
 
