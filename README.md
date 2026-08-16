@@ -78,6 +78,9 @@ After changing Drover source:
 
 ## Share with friends
 
+> [!WARNING]
+> This app will be signed with your credentials, and can identify you, be careful who you share with!
+
 After `./install.sh`, build a signed disk image (default: `~/Desktop/Discord-Drover.dmg`):
 
 ```bash
